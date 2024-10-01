@@ -1,0 +1,44 @@
+#include<Servo.h>
+int pos = 90;
+int pin4 = 4;
+int pin3 = 3;
+int LedHi = 5;
+int LedLow = 6;
+Servo servo1;
+
+void setup() {
+  pinMode(LedHi, OUTPUT);
+  pinMode(LedLow, OUTPUT);
+  pinMode(pin4, INPUT);
+  pinMode(pin3, INPUT);
+  Serial.begin(9600);
+  servo1.attach(9);
+}
+
+void loop() {
+  while (digitalRead(pin3) == HIGH && pos < 180) {
+    digitalWrite(LedLow, LOW);
+    pos++;
+    servo1.write(pos);
+    Serial.print("Degrees rotation= ");
+    Serial.println(pos);
+    if (pos == 180) {
+      Serial.print("Reached top end ");
+      digitalWrite(LedHi, HIGH);
+    }
+    delay(10);
+  }
+
+  while (digitalRead(pin4) == HIGH && pos > 0) {
+    digitalWrite(LedHi, LOW);
+    pos--;
+    servo1.write(pos);
+    Serial.print("Degrees rotation= ");
+    Serial.println(pos);
+    if (pos == 0) {
+      Serial.print("Reached low end ");
+      digitalWrite(LedLow, HIGH);
+    }
+    delay(10);
+  }
+}
